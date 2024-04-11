@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useReducer, useState } from "react";
+import "./App.css";
+import AddNewNote from "./components/AddNewNote";
+import NoteList from "./components/NoteList";
+import NoteStatus from "./components/NoteStatus";
+import NoteHeader from "./components/NoteHeader";
+import { NotesProvider } from "./context/NotesContext";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [sortBy, setSortBy] = useState("latest");
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <NotesProvider>
+      <div className="container">
+        <NoteHeader sortBy={sortBy} onSort={(e) => setSortBy(e.target.value)} />
+        <div className="note-app">
+          <AddNewNote />
+          <div className="note-container">
+            <NoteStatus />
+            <NoteList sortBy={sortBy} />
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </NotesProvider>
+  );
 }
 
-export default App
+export default App;
